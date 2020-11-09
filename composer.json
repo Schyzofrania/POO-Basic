@@ -1,0 +1,14 @@
+{
+    "name": "axelraboit/poo4",
+    "description": "Exercice WCS POO 4 exceptions",
+    "authors": [
+        {
+            "name": "AxelRaboit",
+            "email": "axel.raboit@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"App\\": "src/"}
+    }
+}
