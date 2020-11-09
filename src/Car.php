@@ -1,32 +1,82 @@
+
 <?php
 
-namespace App;
+require_once 'Vehicle.php';
+require_once 'LightableInterface.php';
 
-class ValidationException extends \Exception {}
+class Car extends Vehicle implements LightableInterface
+{
+    const ALLOWED_ENERGIES = [
+        'fuel',
+        'electric',
+    ];
 
-class Car 
+
+    private $energy;
+
+    private $energyLevel;
+
+    private $hasParkBrake;
+
+    public function __construct(string $color, int $nbSeats, string $energy)
     {
-        private $hasParkBrake;
-        private $currentSpeed;
-        
-        public function __construct($hasParkBrake)
-        {
-            $this->hasParkBrake = $hasParkBrake;
-            $this->currentSpeed = 0;
-        }
+        parent::__construct($color, $nbSeats);
+        $this->setEnergy($energy);
+    }
 
-        public function setParkBrake($hasParkBrake)
-        {
-            $this->hasParkBrake = $hasParkBrake;
-        }
+    public function getEnergy(): string
+    {
+        return $this->energy;
+    }
 
-        public function start()
-        {
-            if($this->hasParkBrake == 1)
-            {
-                throw new ValidationException('Exception catched<br>');
-            }
-            $this->currentSpeed = 15;
-            return 'Started <br>';
+    public function setEnergy(string $energy): Car
+    {
+        if (in_array($energy, self::ALLOWED_ENERGIES)) {
+            $this->energy = $energy;
+        }
+        return $this;
+    }
+
+    public function getEnergyLevel(): int
+    {
+        return $this->energyLevel;
+    }
+
+    public function setEnergyLevel(int $energyLevel): void
+    {
+        $this->energyLevel = $energyLevel;
+    }
+
+    public function isHasParkBrake(): bool
+    {
+        return $this->hasParkBrake;
+    }
+
+    public function setHasParkBrake(bool $hasParkBrake): void
+    {
+        $this->hasParkBrake = $hasParkBrake;
+    }
+
+    public function setParkBrake(): void
+    {
+        $this->setHasParkBrake(!($this->isHasParkBrake()));
+    }
+
+    public function start()
+    {
+        if ($this->isHasParkBrake()) {
+            throw new Exception('Frein à main actif');
         }
     }
+
+    public function switchOn()
+    {
+        return 'true';
+    }
+
+    public function switchOff()
+    {
+        return 'false';
+    }
+}
+
